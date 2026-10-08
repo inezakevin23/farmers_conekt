@@ -1,4 +1,4 @@
-const API_BASE = window.API_BASE_URL || "http://localhost:5000";
+const API_BASE = window.API_BASE_URL ?? (["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:5000" : "");
 
 function getToken() {
   const token = localStorage.getItem("token");

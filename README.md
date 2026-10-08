@@ -48,8 +48,8 @@ Farmer Conekt is a digital platform designed to streamline agricultural trade by
 ├── set_up.sh
 ├── .gitignore
 │
-├── backend/
-│   ├── app.py
+├── api/
+│   ├── index.py
 │   ├── config.py             
 │   ├── __init__.py             
 │   │

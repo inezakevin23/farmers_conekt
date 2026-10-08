@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "data/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" },
+    { "source": "/uploads/(.*)", "destination": "/api/index.py" },
+    { "source": "/pages/(.*)", "destination": "/frontend/pages/$1" },
+    { "source": "/scripts/(.*)", "destination": "/frontend/scripts/$1" },
+    { "source": "/styles/(.*)", "destination": "/frontend/styles/$1" },
+    { "source": "/farmer.html", "destination": "/frontend/farmer.html" },
+    { "source": "/transporter.html", "destination": "/frontend/transporter.html" },
+    { "source": "/404.html", "destination": "/frontend/pages/404.html" },
+    { "source": "/", "destination": "/frontend/pages/home.html" }
+  ]
+}

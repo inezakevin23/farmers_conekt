@@ -12,7 +12,7 @@ var orderCounter = 1000; // gives each order a unique number
 
 // Base API endpoint (can be overridden by setting window.API_BASE_URL)
 // Default to localhost:5000 for backend during local development.
-var API_BASE = window.API_BASE_URL || "http://localhost:5000";
+var API_BASE = window.API_BASE_URL ?? (["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:5000" : "");
 
 // If the login page was reached with ?redirect=<url>, use it after successful auth.
 var urlParams = new URLSearchParams(window.location.search);

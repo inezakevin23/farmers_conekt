@@ -2,7 +2,13 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 import os
+import sys
 from flask import send_from_directory
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 from routes.buyer_routes import buyer_routes
 from routes.farmer_routes import farmer_routes
 from routes.auth_routes import auth_routes
@@ -15,9 +21,11 @@ from routes.payment_routes import payment_routes
 app = Flask(__name__)
 
 # Configure CORS with more explicit settings to handle preflight requests
+EXTRA_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
+
 CORS(app, 
      origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5000", 
-              "http://localhost:8000", "http://127.0.0.1:8000", "http://127.0.0.1:5000"],
+              "http://localhost:8000", "http://127.0.0.1:8000", "http://127.0.0.1:5000"] + EXTRA_ORIGINS,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True,
@@ -27,14 +35,18 @@ CORS(app,
 app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 
-UPLOAD_FOLDER = "uploads/crop_images"
+# Vercel's filesystem is read-only except /tmp (ephemeral storage).
+if os.getenv("VERCEL"):
+    UPLOAD_FOLDER = "/tmp/crop_images"
+else:
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads", "crop_images")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 @app.route("/uploads/crop_images/<filename>")
 def serve_product_image(filename):
-    return send_from_directory("uploads/crop_images", filename)
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 app.register_blueprint(auth_routes, url_prefix="/api/auth")
 app.register_blueprint(farmer_routes, url_prefix="/api/farmers")
@@ -51,7 +63,7 @@ def get_districts():
     try:
         import json
         # Look for data/district.json relative to backend directory
-        file_path = os.path.join(os.path.dirname(__file__), "..", "data", "district.json")
+        file_path = os.path.join(BASE_DIR, "..", "data", "district.json")
         with open(file_path, "r") as f:
             data = json.load(f)
         return jsonify(data)

@@ -59,11 +59,9 @@ def sales_report():
 
 def get_forecast_data(cursor):
     # Stub forecast data: (product_id, district_id) -> predicted_demand
-    # In production, integrate ML model or external API
     forecasts = {
         (1, 1): 1000,  # Example: product 1 in district 1
         (2, 1): 500,
-        # Add more based on historical data/ML
     }
     return forecasts
 

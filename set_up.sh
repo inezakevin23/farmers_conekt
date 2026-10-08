@@ -67,7 +67,7 @@ sleep 3
 echo "Setting up database..."
 
 # Run schema (ignore errors if already exists)
-mysql -u root < backend/database/schema.sql 2>/dev/null || echo "Schema already applied or skipped."
+mysql -u root < api/database/schema.sql 2>/dev/null || echo "Schema already applied or skipped."
 
 # Create user and grant privileges
 mysql -u root <<EOF
@@ -88,19 +88,19 @@ echo "✗ Database connection failed"
 # Setup Python environment
 echo "Setting up Python environment..."
 
-if [ ! -d "backend/env" ]; then
-    python3 -m venv backend/env
+if [ ! -d "api/env" ]; then
+    python3 -m venv api/env
 fi
 
-source backend/env/bin/activate
+source api/env/bin/activate
 
 pip install --upgrade pip
 pip install -r requirements.txt
 
 # Start Backend
-cd backend || exit
+cd api || exit
 
-export FLASK_APP=app.py
+export FLASK_APP=index.py
 export FLASK_ENV=development
 
 echo "Starting Flask backend..."

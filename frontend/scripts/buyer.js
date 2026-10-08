@@ -14,7 +14,7 @@ let orders = [];
 let currentOrderFilter = "all";
 let products = []; // Add products array for API data
 
-const API_BASE = window.API_BASE_URL || "http://localhost:5000";
+const API_BASE = window.API_BASE_URL ?? (["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:5000" : "");
 
 function authFetch(path, options = {}) {
   const token = localStorage.getItem("token");
@@ -890,7 +890,7 @@ function confirmLogout() {
 
 // Load products from backend
 function loadProductsFromAPI() {
-  const API_BASE = window.API_BASE_URL || "http://localhost:5000";
+  const API_BASE = window.API_BASE_URL ?? (["localhost", "127.0.0.1"].includes(window.location.hostname) ? "http://localhost:5000" : "");
   fetch(`${API_BASE}/api/buyers/marketplace`)
     .then((response) => response.json())
     .then((data) => {
