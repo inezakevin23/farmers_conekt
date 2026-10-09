@@ -1,7 +1,7 @@
 {
-  "$schema": "https://vercel.sh",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
-    "app": {
+    "backend_app": {
       "root": ".",
       "framework": "flask",
       "functions": {
@@ -10,33 +10,71 @@
         }
       }
     },
-    "api": {
-      "root": "api",
-      "framework": "django"
+    "frontend_assets": {
+      "root": "frontend"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": {
-        "service": "api"
+        "service": "backend_app"
       }
     },
     {
       "source": "/uploads/(.*)",
       "destination": {
-        "service": "app"
+        "service": "backend_app"
       }
     },
-    { "source": "/pages/(.*)", "destination": "/frontend/pages/$1" },
-    { "source": "/scripts/(.*)", "destination": "/frontend/scripts/$1" },
-    { "source": "/styles/(.*)", "destination": "/frontend/styles/$1" },
-    { "source": "/farmer.html", "destination": "/frontend/farmer.html" },
+    {
+      "source": "/pages/(.*)",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/pages/$1"
+      }
+    },
+    {
+      "source": "/scripts/(.*)",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/scripts/$1"
+      }
+    },
+    {
+      "source": "/styles/(.*)",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/styles/$1"
+      }
+    },
+    {
+      "source": "/farmer.html",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/farmer.html"
+      }
+    },
     {
       "source": "/transporter.html",
-      "destination": "/frontend/transporter.html"
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/transporter.html"
+      }
     },
-    { "source": "/404.html", "destination": "/frontend/pages/404.html" },
-    { "source": "/", "destination": "/frontend/pages/home.html" }
+    {
+      "source": "/404.html",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/pages/404.html"
+      }
+    },
+    {
+      "source": "/",
+      "destination": {
+        "service": "frontend_assets",
+        "path": "/pages/home.html"
+      }
+    }
   ]
 }

@@ -224,10 +224,12 @@ def upload_product():
 
     if image:
         filename = str(uuid.uuid4()) + "_" + image.filename
-        filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
-        image.save(filepath)
+        image_bytes = image.read()
 
-        image_path = f"/uploads/crop_images/{filename}"
+        # Media storage backend (local or Supabase), configured via MEDIA_BACKEND.
+        from supabase_media import upload_media
+
+        _, image_path = upload_media(image_bytes, filename, image.content_type or "image/jpeg")
 
     try:
         connection = get_db_connection()
@@ -476,9 +478,12 @@ def update_product(product_id):
     # Handle image upload
     if image:
         filename = str(uuid.uuid4()) + "_" + image.filename
-        filepath = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
-        image.save(filepath)
-        image_path = f"/uploads/crop_images/{filename}"
+        image_bytes = image.read()
+
+        # Media storage backend (local or Supabase), configured via MEDIA_BACKEND.
+        from supabase_media import upload_media
+
+        _, image_path = upload_media(image_bytes, filename, image.content_type or "image/jpeg")
         update_fields.append("image_url=%s")
         update_values.append(image_path)
 
