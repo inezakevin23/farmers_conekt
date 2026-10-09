@@ -1,5 +1,5 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "$schema": "https://vercel.sh",
   "services": {
     "backend_app": {
       "root": ".",
@@ -28,52 +28,16 @@
       }
     },
     {
-      "source": "/pages/(.*)",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/pages/$1"
-      }
-    },
-    {
-      "source": "/scripts/(.*)",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/scripts/$1"
-      }
-    },
-    {
-      "source": "/styles/(.*)",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/styles/$1"
-      }
-    },
-    {
-      "source": "/farmer.html",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/farmer.html"
-      }
-    },
-    {
-      "source": "/transporter.html",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/transporter.html"
-      }
-    },
-    {
-      "source": "/404.html",
-      "destination": {
-        "service": "frontend_assets",
-        "path": "/pages/404.html"
-      }
-    },
-    {
       "source": "/",
       "destination": {
         "service": "frontend_assets",
         "path": "/pages/home.html"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend_assets"
       }
     }
   ]
