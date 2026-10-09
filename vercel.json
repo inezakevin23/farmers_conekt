@@ -2,13 +2,8 @@
   "$schema": "https://vercel.sh",
   "services": {
     "backend_app": {
-      "root": ".",
-      "framework": "flask",
-      "functions": {
-        "api/index.py": {
-          "includeFiles": "data/**"
-        }
-      }
+      "root": "api",
+      "framework": "flask"
     },
     "frontend_assets": {
       "root": "frontend"
@@ -18,13 +13,15 @@
     {
       "source": "/api/(.*)",
       "destination": {
-        "service": "backend_app"
+        "service": "backend_app",
+        "path": "/api/$1"
       }
     },
     {
       "source": "/uploads/(.*)",
       "destination": {
-        "service": "backend_app"
+        "service": "backend_app",
+        "path": "/uploads/$1"
       }
     },
     {
